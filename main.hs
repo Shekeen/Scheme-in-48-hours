@@ -7,9 +7,6 @@ import System.Environment
 import System.IO
 
 import Scheme.Aux
-import Scheme.Env
-import Scheme.Error
-import Scheme.Eval
 import Scheme.Parser
 import Scheme.Values
 
@@ -31,10 +28,10 @@ evalAndPrint :: Env -> String -> IO ()
 evalAndPrint env expr = evalString env expr >>= putStrLn
 
 runOne :: String -> IO ()
-runOne expr = nullEnv >>= flip evalAndPrint expr
-          
+runOne expr = primitiveBindings >>= flip evalAndPrint expr
+
 runRepl :: IO ()
-runRepl = nullEnv >>= until_ (== "quit") (readPrompt "Lisp> ") . evalAndPrint
+runRepl = primitiveBindings >>= until_ (== "quit") (readPrompt "Lisp> ") . evalAndPrint
 
 main = do
      args <- getArgs
